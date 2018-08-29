@@ -11,8 +11,17 @@ const logger = createLogger({
       format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
     ),
     transports: [
-      new transports.File({ filename: 'error.log', level: 'error' }),
-      new transports.File({ filename: 'combined.log' })
+      new transports.File({ 
+        filename: 'error.log', 
+        level: 'error',
+        prettyPrint: true,                                                                                                                                                                                                               
+        handleExceptions: true 
+      }),
+      new transports.File({ 
+        filename: 'combined.log',
+        prettyPrint: true,                                                                                                                                                                                                               
+        handleExceptions: true 
+      })
     ]
   });
   
@@ -24,6 +33,7 @@ const logger = createLogger({
           format: 'YYYY-MM-DD HH:mm:ss'
         }),
         format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+      )
     }));
   }
 
