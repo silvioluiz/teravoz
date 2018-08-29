@@ -4,15 +4,36 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "dotenv": "^6.0.0",
+    "dotenv-webpack": "^1.5.7",
     "koa": "^2.5.2",
     "koa-body": "^4.0.4",
+    "koa-body-parser": "^1.1.2",
     "koa-bodyparser": "^4.2.1",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "node-fetch": "^2.2.0",
+    "winston": "^3.0.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./node_modules/.bin/webpack-dev-server --progress --config webpack.config.dev.js --open --mode development",
+    "build": "./node_modules/.bin/webpack --progress --config webpack.config.prod.js --colors --mode production",
+    "start-backend": "node ./src/mock/index.js",
+    "start-mock-dev": "nodemon ./src/mock/index.js --exec ./node_modules/.bin/babel-node --presets @babel/env",
+    "watch": "npm run build -- --watch",
+    "test": "mocha --require babel-polyfill --require babel-register"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Silvio Luiz <silvio.luiz@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^7.1.5",
+    "babel-register": "^6.26.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.6"
+  }
 }
