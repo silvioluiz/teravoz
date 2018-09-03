@@ -1,16 +1,20 @@
-import {logger, fetch} from '../config';
+import {logger, fetch} from '../config';  
 import CallEvent from '../models/index';
 
 async function mockWebhookEvents(uri, payLoad){
     try{
       let response = await fetch(uri, { 
         method: 'POST',
-        body: payLoad
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payLoad)
       });  
       
       if(response.status === 200) {
         let data = await response.json();
-        logger.info(data);
+        logger.info(`Webhook respondendo. Response: ${data}`);
         return data;
       }
       logger.error(`Falha ao invocar Webhook. Status: ${response.status}`);
@@ -30,3 +34,5 @@ function emmitEvent(interval = 10000){
 }
 
 emmitEvent(1000);
+
+
