@@ -18,7 +18,7 @@ const logger = createLogger({
         handleExceptions: true 
       }),
       new transports.File({ 
-        filename: 'combined.log',
+        filename: 'full.log',
         prettyPrint: true,                                                                                                                                                                                                               
         handleExceptions: true 
       })
