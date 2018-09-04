@@ -1,6 +1,7 @@
 import winston from 'winston';
 const {format, createLogger, transports} = require('winston');
 
+
 const logger = createLogger({
     level: 'info',
     format: format.combine(
@@ -17,7 +18,7 @@ const logger = createLogger({
         prettyPrint: true,                                                                                                                                                                                                               
         handleExceptions: true 
       }),
-      new transports.File({ 
+     new transports.File({ 
         filename: 'full.log',
         prettyPrint: true,                                                                                                                                                                                                               
         handleExceptions: true 
@@ -25,16 +26,4 @@ const logger = createLogger({
     ]
   });
   
-  if (process.env.NODE_ENV !== 'production') {
-    logger.add(new transports.Console({
-      format: format.combine(
-        format.label({ label: '[my-label]' }),
-        format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss'
-        }),
-        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-      )
-    }));
-  }
-
   module.exports = logger;
