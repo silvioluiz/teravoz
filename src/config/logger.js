@@ -25,5 +25,17 @@ const logger = createLogger({
       })
     ]
   });
+
+  if (process.env.NODE_ENV !== 'production') {
+      logger.add(new transports.Console({
+        format: format.combine(
+          format.label({ label: '[my-label]' }),
+          format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+          }),
+          format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+        )
+      }));
+    }
   
   module.exports = logger;

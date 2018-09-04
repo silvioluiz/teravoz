@@ -17,11 +17,11 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --progress --config webpack.config.dev.js --open --mode development",
-    "build": "./node_modules/.bin/webpack --progress --config webpack.config.prod.js --colors --mode production",
-    "start-teravoz": "node ./src/mock/index.js",
+    "build": "./node_modules/.bin/babel ./src --out-dir ./dist --source-maps --copy-files -v",
+    "start-teravoz": "node ./dist/mock/index.js",
+    "start-webhook": "node ./dist/webhook/server.js",
     "start-teravoz-dev": "nodemon ./src/mock/index.js --exec ./node_modules/.bin/babel-node --inspect --presets @babel/env",
     "start-webhook-dev": "nodemon -V ./src/webhook/server.js --exec ./node_modules/.bin/babel-node --presets @babel/env",
-    "watch": "npm run build -- --watch",
     "test": "mocha --require babel-polyfill --require babel-register"
   },
   "author": "Silvio Luiz <silvio.luiz@gmail.com>",
