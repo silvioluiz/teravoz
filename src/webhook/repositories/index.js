@@ -1,5 +1,4 @@
 import Customers from '../models';
-import logger from '../../config';
 
 const customers = new Customers() ;
 

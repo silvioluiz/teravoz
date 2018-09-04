@@ -1,12 +1,8 @@
-//FIXME: Colocar apenas os eventos de Webhook. Criar eventos de atendente e enviar no mesmo builderRandom
-//TODO Implementar EventEmitter Pattern.
 const WebHookTypes = [
     "call.new",
-    "call.waiting",
     "call.standby",
+    "call.waiting",
     "call.ongoing",
-    "call.overflow", 
-    "call.follow-me",
     "call.finished"
 ];
 
@@ -16,6 +12,9 @@ const TheirNumbers = [
     "933333333",
     "944444444",
     "955555555",
+    "966666666",
+    "977777777",
+    "988888888"
 ];
 
 const ourNumber = "08002018099";

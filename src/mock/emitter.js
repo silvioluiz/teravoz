@@ -1,0 +1,38 @@
+import {logger, fetch} from '../config';  
+import CallEvent from '../mock/models/index';
+
+async function mockWebhookEvents(uri, payLoad){
+    try{
+      let response = await fetch(uri, { 
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payLoad)
+      });  
+      
+      let result = await response.json();
+      
+      if(response.status === 200 && result.status === 'ok') {
+        return result;
+      }
+      logger.error(`Falha ao invocar Webhook. Status: ${response.status}, body: ${result}`);
+    }catch(err){
+      logger.error(`Falha ao invocar Webhook. Erro:  ${err.message}`);
+    }
+}
+
+function emmitEvents(interval = 10000){
+    logger.info(`Invocando Webhook a cada ${interval/1000} segundos`);
+    return new Promise( resolve => {
+        setInterval( () => {
+            //TODO Externalizar URL
+            mockWebhookEvents('http://localhost:3000/webhook', CallEvent.builderRandom())
+        }, interval)
+    });
+}
+
+module.exports = emmitEvents;
+
+
