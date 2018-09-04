@@ -5,43 +5,22 @@ const repository = new Repository();
 const destinationNotFound = "900";
 const destinationFound = "901";
 
-
-class WebHookController{
-    async webhook(ctx, next) {
-        const event = ctx.request.body; 
-        const destination = destinationNotFound;
-
-        try {
-        
-            if (await Repository.findOrRegister(event.their_number)){
-                destination = destinationFound;
-            } 
-            //await this._delegate(uri, _preparePayloadDelegate(call_id, destination));
-            //TODO criar um level/logger apenas para registro do webhook
-            logger.info(`DELEGADO Evento ID:${event.call_id} referente ao número ${event.their_number} criado às ${event.timestamp} para o destino ${destination}.`);
-        
-            logger.info(`Evento ID:${event.call_id}, Tipo: ${event.type} referente ao número ${event.their_number} criado às ${event.timestamp} recebido no webhook.`);
-            ctx.body= JSON.stringify({"status": "ok"});
-        } catch (error) {
-            ctx.body= JSON.stringify({"status": "error", "error": error});
-        }
-    }
-
+class TeravozClient{
     _preparePayloadDelegate(call_id, destination){
         const payload = {
             "type": "delegate",
             "call_id": call_id,
             "destination": destination
         }
-        return payLoad;
+        return payload;
     }
 
     _prepareAuthorizationDelegate(){
-        const user = Buffer.from(process.env.TERAVOZ_USER);
-        const password = Buffer.from(process.env.TERAVOZ_USER);
+        const user = Buffer.from("process.env.TERAVOZ_USER");
+        const password = Buffer.from("process.env.TERAVOZ_USER");
         return `Basic ${user.toString('base64')}: ${password.toString('base64')}`;
     }
-
+    
     async _delegate(uri, payload) {
         try{
             let response = await fetch(uri, { 
@@ -51,19 +30,42 @@ class WebHookController{
                 'Content-Type': 'application/json',
                 'Authorization': this._prepareAuthorizationDelegate()
               },
-              body: JSON.stringify(payLoad)
+              body: JSON.stringify(payload)
             });  
             
             let result = await response.json();
 
-            if(response.status === 200 && response.body['status'] === 'ok') {
-              logger.info(result);
+            if(response.status === 200 && result.status === 'ok') {
               return result;
             }
-            logger.error(`Falha ao invocar Delegate. Status: ${response.status}, body: ${response.body}`);
+            logger.error(`Falha ao invocar Delegate. Status: ${response.status}, body: ${result.status}`);
           }catch(error){
             logger.error(`Falha ao invocar Delegate. Erro:  ${error.message}`);
           }
+    }
+}
+
+
+class WebHookController{
+    
+    async webhook(ctx, next) {
+        const event = ctx.request.body; 
+        let destination = destinationNotFound;
+        let client = new TeravozClient();
+        try {
+            if(event.type === 'call.standby'){
+                if (await Repository.findOrRegister(event.their_number)){
+                    destination = destinationFound;
+                } 
+                await client._delegate('http://localhost:3001/actions' , client._preparePayloadDelegate(event.call_id, destination));
+                logger.info(`[WEBHOOK] Delegado Evento ID:${event.call_id} referente ao número ${event.their_number} criado às ${event.timestamp} para o destino ${destination}.`);
+            }
+            logger.debug(`[WEBHOOK] Evento ID:${event.call_id}, Tipo: ${event.type} referente ao número ${event.their_number} criado às ${event.timestamp} recebido no webhook.`);
+            ctx.body= JSON.parse('{"status": "ok"}');
+        } catch (error) {
+            logger.error(`Falha ao invocar webhook. Erro:  ${error.message}`);
+            ctx.body= JSON.parse(`{"status": "error", "error": "${error}"}`);
+        }
     }
 
 }
