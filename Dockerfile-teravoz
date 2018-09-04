@@ -1,0 +1,14 @@
+FROM node:8.11.4-alpine
+
+WORKDIR /home/app/
+
+COPY .babelrc package*.json webpack*.js /home/app/
+COPY src /home/app/src
+
+RUN npm install
+
+#ENV TERAVOZ_URL https://api.teravoz.com.br/
+#ENV PORT 3001
+
+RUN ["npm","run", "build"]
+CMD ["npm","run", "start-teravoz"]
