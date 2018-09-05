@@ -2,7 +2,20 @@ Simulação de Integração com a API da Teravoz, delegando chamadas do tipo 'ca
 
 # 1. Execução com docker-compose
 
-## 1.1 Execução
+## 1.1 Stack
+
+- KoaJS (Provimento de API)
+- node-fetch (Consumo de API)
+- Babel (transpilador) para uso de recursos de ES6 (async functions, import...)
+- Webpack (Bundler pra parte Web)
+- Winston (Logger)
+- Docker-compose e docker para conteinerização
+
+## 1.2 Arquitetura interna
+
+![Arquitetura Interna](/TeravozDesafio.jpg)
+
+## 1.3 Execução
 
 Assumindo que o docker-compose está instalado, executar o comando abaixo no diretório raiz:
 
