@@ -2,6 +2,8 @@ Simulação de Integração com a API da Teravoz, delegando chamadas do tipo 'ca
 
 # 1. Execução com docker-compose
 
+## 1.1 Execução
+
 Assumindo que o docker-compose está instalado, executar o comando abaixo no diretório raiz:
 
 ```docker-compose build```
