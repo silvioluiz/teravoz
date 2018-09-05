@@ -73,12 +73,8 @@ O arquivo src/webhook/models/db.json possui o registro dos números inicialmente
 *Nota:* Por não ser uma boa prática atualizar um arquivo da própria aplicação, persistência será atualizada para um REDIS via docker-compose.yml.
 
 # TODO: 
-- [ToBeDoneNow] Incluir Diagrama do fluxo interno. 
-- [ToBeDoneNow] Detalhar tecnologias utilizadas.
-- [Done] Externalizar URL's, USER, PASSWORD, PORT's dos serviços.
-- [ToBeDoneNow] Substituir Json local por REDIS.
+- Substituir Json local por REDIS.
 - Incluir Testes.
-- [ToBeDoneNow] Criar Volume para arquivo de log.
 - Melhorias/correções nos script's para desenvolvimento.
 - Configuração correta do Webpack para React.
 
