@@ -16,8 +16,8 @@ class TeravozClient{
     }
 
     _prepareAuthorizationDelegate(){
-        const user = Buffer.from("process.env.TERAVOZ_USER");
-        const password = Buffer.from("process.env.TERAVOZ_USER");
+        const user = process.env.TERAVOZ_USER || "teravoz";
+        const password = process.env.TERAVOZ_PASSWORD || "password" ;
         return `Basic ${user.toString('base64')}: ${password.toString('base64')}`;
     }
     
@@ -40,7 +40,7 @@ class TeravozClient{
             }
             logger.error(`Falha ao invocar Delegate. Status: ${response.status}, body: ${result.status}`);
           }catch(error){
-            logger.error(`Falha ao invocar Delegate. Erro:  ${error.message}`);
+            logger.error(`Falha ao invocar Delegate. Erro: ${error.message}`);
           }
     }
 }
@@ -57,7 +57,7 @@ class WebHookController{
                 if (await Repository.findOrRegister(event.their_number)){
                     destination = destinationFound;
                 } 
-                await client._delegate('http://localhost:3001/actions' , client._preparePayloadDelegate(event.call_id, destination));
+                await client._delegate(`${process.env.TERAVOZ_HOST}:${process.env.TERAVOZ_PORT}/actions` , client._preparePayloadDelegate(event.call_id, destination));
                 logger.info(`[WEBHOOK] Delegado Evento ID:${event.call_id} referente ao número ${event.their_number} criado às ${event.timestamp} para o destino ${destination}.`);
             }
             logger.debug(`[WEBHOOK] Evento ID:${event.call_id}, Tipo: ${event.type} referente ao número ${event.their_number} criado às ${event.timestamp} recebido no webhook.`);

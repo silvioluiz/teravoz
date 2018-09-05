@@ -1,14 +1,16 @@
-import logger from '../config'
+import {logger} from '../config'
 import router from '../mock/routes'
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
+require('dotenv').config();
 
 function initServer(){
     const appClient = new Koa();
     appClient.use(bodyParser());
     appClient.use(router.routes());
     appClient.use(router.allowedMethods());
-    appClient.listen(3001);
+    logger.info(`Teravoz iniciando na porta ${process.env.TERAVOZ_PORT || 3001} `);
+    appClient.listen(process.env.TERAVOZ_PORT || 3001);
     appClient.on('error', err => {
         logger.error('server error', err)
     });

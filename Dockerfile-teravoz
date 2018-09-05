@@ -7,8 +7,8 @@ COPY src /home/app/src
 
 RUN npm install
 
-#ENV TERAVOZ_URL https://api.teravoz.com.br/
-#ENV PORT 3001
+ENV WEBHOOK_HOST "http://webhook"
+ENV WEBHOOK_PORT 3000
 
 RUN ["npm","run", "build"]
 CMD ["npm","run", "start-teravoz"]

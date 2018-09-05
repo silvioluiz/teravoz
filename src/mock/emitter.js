@@ -27,8 +27,7 @@ function emmitEvents(interval = 10000){
     logger.info(`Invocando Webhook a cada ${interval/1000} segundos`);
     return new Promise( resolve => {
         setInterval( () => {
-            //TODO Externalizar URL
-            mockWebhookEvents('http://localhost:3000/webhook', CallEvent.builderRandom())
+            mockWebhookEvents(`${process.env.WEBHOOK_HOST}:${process.env.WEBHOOK_PORT}/webhook`, CallEvent.builderRandom())
         }, interval)
     });
 }

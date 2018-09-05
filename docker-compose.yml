@@ -5,17 +5,26 @@ services:
     #image: webhook-stable
     ports: 
       - "3000:3000"
-    links: teravoz
+    expose:
+      - "3000"
+    networks: 
+      main:
+        aliases:
+          - webhook
     build: 
       context: .
       dockerfile: Dockerfile-webhook
-    depends_on: 
-      - teravoz
   teravoz:
     ports:
       - "3001:3001"
-    links: 
-      - webhook
+    expose:
+      - "3001"
+    networks:
+      main:
+        aliases:
+          - teravoz
     build:
       context: .
       dockerfile: Dockerfile-teravoz
+networks: 
+  main:
