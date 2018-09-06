@@ -27,6 +27,9 @@ Após execução, basta executar o comando abaixo:
 
 Os logs envolvendo o evento do tipo *'*call.standby* serão exibidos na console do terminal. 
 
+![Docker Compose Log](/docker-compose-log.png)
+
+
 *Nota 1:* Os services criados não usam a [configuração de image do build](https://docs.docker.com/compose/compose-file/#build), pois na configuração atual uma vez executado o build a layer de aplicação utilizaria do cache do Docker, apenas refletindo alterações apagando as imagens criadas e refazendo o build.
 
 *Nota 2:* A atual configuração não possui cache, mas requer que os builds executados - que gerarão imagens únicas - sejam apagados posteriormente.
