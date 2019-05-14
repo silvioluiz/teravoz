@@ -9,7 +9,7 @@ class CustomerRepository{
     }
 
     static findByNumber(number){
-        return customers.existsContact(number);
+        return customers.contactExists(number);
     }
 
     static async findOrRegister(number){

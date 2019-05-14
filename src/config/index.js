@@ -8,7 +8,5 @@ const config = {
     fetch
 }
 
-
-
 module.exports = config;
 
