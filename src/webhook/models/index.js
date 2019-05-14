@@ -1,60 +1,64 @@
 import logger from '../../config';
 import fs from 'fs-extra';
 import path from 'path';
-//TODO externalizar path do 'banco' pra fora da aplicação.
+import redis from 'async-redis';
+
 const filePath = path.join(__dirname , 'db.json');
+const redisCustomers = "customers";
 
 class Customers {
     
     constructor(){
-        this.numbers = new Set();
-        this.filePath = filePath;
-        this._loadFile();
+        this.client = redis.createClient({host:'redis', port: '6379'});
+        this.client.on("error", function (err) {
+            console.log("REDIS error: " + err);
+        });
+        this.client.on("ready", async function (g) {
+            console.log("REDIS Ready");
+        });
+        
+        this._loadInitialCustomers(filePath);
      }
 
-    existsContact(number){
-        return this.numbers.has(number);
+    async contactExists(number){
+        let isMember = await this.client.sismember(redisCustomers, number);
+        return isMember;
     }
     async findOrRegister(number){
         try {
-            let isFound = false;
-            if (!this.existsContact(number)){
-                this.numbers.add(number);
-                await this._writeFile(number);    
-                isFound = true;
+            let isFound = await this.contactExists(number);
+            if (!isFound){
+                await this._saveCustomers(Array.of(number));
             }
             return isFound;    
         } catch (error) {
-            logger.error(error);
+            logger.error(`Falha ao buscar Customer no método find: ${error}`);
             throw error;
         }
     }
 
-     async _loadFile(){
+     async _loadInitialCustomers(filePath){
         try {
+            await this.client.del(redisCustomers);
             let data = await fs.readJson(filePath, 'utf8');
-            for (let line of data.customers){
-                this.numbers.add(line['number'] );
-            }
+            let numbers = Array.from(data.customers.map(function(item){
+                return item.number;
+            }));
+            let insercoes = await this._saveCustomers(numbers);
+              
         } catch (error) {
-            logger.error(`Falha ao carregar arquivo: ${error}`);
+            logger.error(`Falha ao pré carregar Customers no método _loadInitialCustomers: ${error}`);
             throw error;
         }
      }
 
-     async _writeFile(number){
-        try {
-           let array = [];
-           this.numbers.forEach( (value) => {
-                array.push(`{"number": ${value}}`);
-           });
-           array.push(`{"number": ${number}}`);
-           let customers = JSON.parse("{\"customers\":["+array.join(",\n")+"]}");
-           await fs.writeJson(filePath,customers,{spaces: 2});
-        } catch (error) {
-            logger.error(`Falha ao persistir arquivo: ${error}`);
+    async _saveCustomers(numbers){
+        try{;
+            return await this.client.sadd(redisCustomers, ...numbers);
+         } catch(error){
+            logger.error(`Falha ao salvar customers no método _saveCustomers: ${error}`);
             throw error;
-        }
+         }
      }
     
 }
