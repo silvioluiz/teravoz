@@ -1,9 +1,10 @@
 {
   "name": "teravoz",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "async-redis": "^1.1.7",
     "dotenv": "^6.0.0",
     "dotenv-webpack": "^1.5.7",
     "fs-extra": "^7.0.0",
