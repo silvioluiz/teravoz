@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     expose:
       - "3000"
+    links: 
+      - redis
     networks: 
       main:
         aliases:
@@ -26,5 +28,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-teravoz
+  redis:
+    image: redis:5.0.4-alpine
+    restart: always
+    container_name: redis
+    expose: 
+      - "6379"
+    networks:
+      main:
+        aliases:
+          - redis
+    privileged: true
+    sysctls:
+      net.core.somaxconn: 511
 networks: 
   main:
