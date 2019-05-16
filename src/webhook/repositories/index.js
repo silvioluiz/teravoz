@@ -1,21 +1,15 @@
 import Customers from '../models';
 
-const customers = new Customers() ;
+const customers = new Customers();
 
-class CustomerRepository{
-    
-    constructor(customers){
-        this.customers = customers;
-    }
+class CustomerRepository {
+  static findByNumber(number) {
+    return customers.contactExists(number);
+  }
 
-    static findByNumber(number){
-        return customers.contactExists(number);
-    }
-
-    static async findOrRegister(number){
-        return await customers.findOrRegister(number);   
-    }
-
+  static async findOrRegister(number) {
+    return customers.findOrRegister(number);
+  }
 }
 
 module.exports = CustomerRepository;

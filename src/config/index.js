@@ -1,12 +1,12 @@
-import logger from './logger';
 import fetch from 'node-fetch';
+import logger from './logger';
+
 
 global.fetch = fetch;
 
 const config = {
-    logger,
-    fetch
-}
+  logger,
+  fetch,
+};
 
 module.exports = config;
-
