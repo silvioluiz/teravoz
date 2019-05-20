@@ -75,20 +75,17 @@ Após execução dos script's, arquivos de log serão gerados na pasta raiz. Sã
 
 O arquivo src/webhook/models/db.json possui o registro dos números inicialmente cadastrados como contato (911111111, 922222222 e 933333333). Quando um evento do tipo *call.standby* chega no Webhook e o número não existe, ele é armazenado no Redis. 
 
-*Nota:* Por não ser uma boa prática atualizar um arquivo da própria aplicação, persistência será atualizada para um REDIS via docker-compose.yml.
-
 # Últimas Melhorias:
 - Substituição de persistência em arquivo por REDIS (Refatoração do Model de Customers e inclusão do Redis no docker-compose.yml). 
 - Refatoração de nomenclatura.
+- Inclusão de Linter.
 
 # TODO: 
 - Incluir Testes e comandos Make.
-- Incluir Lint no empacotamento.
 - Atualizar versão das libs.
 - Correção da imagem da arquitetura na seção 1.2 (O componente Teravoz client delega a ligação para o número 901 caso o cliente já exista, imagem usa o número 900).
 - Melhorias/correções nos script's para desenvolvimento.
 - Configuração correta do Webpack para React.
-
 
 # BÔNUS:
 - React para eventos call.ongoing.
